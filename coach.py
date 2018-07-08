@@ -13,6 +13,7 @@ class coaching():
     def executeepisode(self):
         trainexample = []
         board = self.game.startphan()
+        new_board = self.game.dim_board()
         self.curplayer = 1
         episodestep = 0
 
@@ -20,13 +21,13 @@ class coaching():
             episodestep += 1
             oneminusone = self.game.oneminusone(board, self.curplayer)
             temp = int(episodestep < 20)
-            pi = self.mcts.getactionprob(oneminusone)
+            pi = self.mcts.getactionprob(oneminusone, new_board)
             sym = self.game.symme(oneminusone, pi)
             for b, p in sym:
                 trainexample.append([b, self.curplayer, p, None])
 
             action = np.random.choice(len(pi), p=pi)
-            board, self.curplayer = self.game.nextstate(board, self.curplayer, action)
+            board, self.curplayer,  new_board = self.game.nextstate(board, new_board, self.curplayer, action)
             print("episode :", episodestep, "\n", board)
             r = self.game.ggeutnam(board, self.curplayer)
 
@@ -39,7 +40,7 @@ class coaching():
             iterationtrainexample = []
             finalexample = []
 
-            for i in range(10):
+            for i in range(3):
                 print("game:", i)
                 iterationtrainexample += self.executeepisode()
 
