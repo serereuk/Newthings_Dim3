@@ -36,11 +36,11 @@ class coaching():
 
     def learn(self):
 
-        for iter in range(5):
+        for iter in range(100):
             iterationtrainexample = []
             finalexample = []
 
-            for i in range(3):
+            for i in range(10):
                 print("game:", i)
                 iterationtrainexample += self.executeepisode()
 
