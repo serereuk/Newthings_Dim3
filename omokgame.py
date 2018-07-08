@@ -18,15 +18,18 @@ class Omokgame():
     def actionsize(self):
         return self.gbsize * self.gbsize + 1
 
-    def nextstate(self, board, player, action):
+    def nextstate(self, board, new_board, player, action):
         if action == self.gbsize * self.gbsize:
             return board, -player
 
         b = Phan(self.gbsize, self.win_standard)
         b.board = np.copy(board)
+        b.new_board = np.copy(new_board)
         move = (int(action / self.gbsize), action % self.gbsize)
         b.moving(move, player)
-        return b.board, -player
+        b.dim_moving(move, player)
+        b.new_board[2] = self.oneminusone(np.copy(b.board), -player)
+        return b.board, -player, b.new_board
 
     def validmove(self, board, player):
 
@@ -82,3 +85,7 @@ class Omokgame():
 
     def stringstring(self, board):
         return board.tostring()
+
+    def dim_board(self):
+        b = Phan(self.gbsize, self.win_standard)
+        return b.new_board

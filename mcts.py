@@ -12,9 +12,9 @@ class mcts():
         self.Es = {}
         self.Vs = {}
 
-    def getactionprob(self, oneminusone, temp=1):
+    def getactionprob(self, oneminusone, new_board,temp=1):
         for i in range(100):
-            self.search(oneminusone)
+            self.search(oneminusone, new_board)
 
         s = self.game.stringstring(oneminusone)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.actionsize())]
@@ -29,7 +29,7 @@ class mcts():
         probs = [x / float(sum(counts)) for x in counts]
         return probs
 
-    def search(self, oneminusone):
+    def search(self, oneminusone, new_board):
         s = self.game.stringstring(oneminusone)
 
         if s not in self.Es:
@@ -39,7 +39,7 @@ class mcts():
 
         if s not in self.Ps:
             # leaf node
-            self.Ps[s], v = self.nnet.predict(oneminusone)
+            self.Ps[s], v = self.nnet.predict(new_board)
             valids = self.game.validmove(oneminusone, 1)
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])
@@ -70,10 +70,10 @@ class mcts():
                     best_act = a
 
         a = best_act
-        next_s, next_player = self.game.nextstate(oneminusone, 1, a)
+        next_s, next_player, next_board = self.game.nextstate(oneminusone, new_board, 1, a)
         next_s = self.game.oneminusone(next_s, next_player)
 
-        v = self.search(next_s)
+        v = self.search(next_s, next_board)
 
         if (s, a) in self.Qsa:
             self.Qsa[(s, a)] = (self.Nsa[(s, a)] * self.Qsa[(s, a)] + v) / (self.Nsa[(s, a)] + 1)
