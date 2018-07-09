@@ -36,27 +36,27 @@ class coaching():
 
     def learn(self):
 
-        for iter in range(100):
+        #self.nnet.loading("~/", "model1.ckpt")
+        for iter in range(1):
             iterationtrainexample = []
             finalexample = []
+            try:
+                for i in range(5):
+                    print("game:", i)
+                    iterationtrainexample += self.executeepisode()
 
-            for i in range(10):
-                print("game:", i)
-                iterationtrainexample += self.executeepisode()
+                self.trainexamplehistory.append(iterationtrainexample)
 
-            self.trainexamplehistory.append(iterationtrainexample)
+                for e in self.trainexamplehistory:
+                    finalexample.append(e)
 
-            for e in self.trainexamplehistory:
-                finalexample.append(e)
+                self.nnet.train(finalexample)
+                self.mcts = mcts(self.game, self.nnet)
+            except:
+                self.nnet.saving("~/", "model1.ckpt")
 
-            self.nnet.train(finalexample)
-            self.mcts = mcts(self.game, self.nnet)
+        self.nnet.saving("~/", "model1.ckpt")
 
-
-
-        #self.executeepisode()
-        #self.nnet.saving("~/", "model1.ckpt")
-        #self.pnet.loading("~/", "model1.ckpt")
 
 
 
