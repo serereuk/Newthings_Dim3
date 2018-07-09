@@ -7,8 +7,12 @@ from mcts import mcts
 
 class fight():
 
-    def __init__(self, gbsize, win_standard):
+    def __init__(self, gbsize, win_standard, order):
         self.human = None
+        if order == "black":
+            self.human = 1
+        else:
+            self.human = -1
         self.gbsize = gbsize
         self.win_standard = win_standard
 
@@ -17,30 +21,37 @@ class fight():
 
     def Act(self, board):
         try:
-            where = input("move, ex(3,7)")
+            where = int(input("move, ex) 37 = (3,7)"))
+            moves = [int(where / 10), int(where % 10)]
             b = Phan(self.gbsize, self.win_standard)
             b.board = np.copy(board)
-            b.moving(where, self.human)
+            b.moving(moves, self.human)
             board = np.copy(b.board)
 
         except Exception as e:
-            move = -1
+            moves = -1
 
-        if move == -1 or move not in Omokgame(self.gbsize, self.win_standard).validmove(board, self.human):
+        if moves == -1 or moves not in Omokgame(self.gbsize, self.win_standard).validmove(board, self.human):
             print("Impossible move, retry")
-            move = self.Act(board)
+            self.Act(board)
 
-        return move
+        return board
 
 def Run():
     try:
         b = Phan(13, 5)
-        board = Omokgame.startphan()
+        game = Omokgame(13,5)
+        board = game.startphan()
+        new_board = game.dim_board()
         b.board = np.copy(board)
+        player = -1
         display = visual(13, 5)
         display.prepare_display()
         f = fight(13, 5)
-        human_move = f.Act(b.board)
+        while True:
+            human_move = f.Act(b.board)
+            oneminusone = game.oneminusone(board, player)
+
 
 
 

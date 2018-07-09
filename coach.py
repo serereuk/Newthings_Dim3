@@ -39,7 +39,7 @@ class coaching():
     def learn(self):
 
         #self.nnet.loading("~/", "model1.ckpt")
-        for iter in range(10000):
+        for iter in range(1000):
             print("iteration : ", iter+1)
             self.prints = False
             iterationtrainexample = []
