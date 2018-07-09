@@ -17,10 +17,10 @@ class Phan():
         self.gbsize = gbsize
         self.win_standard = win_standard
         self.board = np.zeros((self.gbsize, self.gbsize), dtype=np.int32)
-        self.board[6, 6] = 1
+        self.board[int(self.gbsize / 2), int(self.gbsize / 2)] = 1
         zeros = np.zeros((self.gbsize, self.gbsize))
         zeros_1 = np.copy(zeros)
-        zeros_1[6, 6] = 1
+        zeros_1[int(self.gbsize / 2), int(self.gbsize / 2)] = 1
         self.new_board = np.array([zeros_1, zeros, zeros])
 
     def dun_soo(self):   # 아직 비어 있는 곳을 의미
