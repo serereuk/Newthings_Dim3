@@ -41,6 +41,7 @@ class coaching():
         #self.nnet.loading("~/", "model1.ckpt")
         for iter in range(1000):
             print("iteration : ", iter+1)
+            self.nnet.saving("~/", "model1.ckpt")
             self.prints = False
             iterationtrainexample = []
             finalexample = []
