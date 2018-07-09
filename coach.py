@@ -9,12 +9,13 @@ class coaching():
         #self.pnet = self.nnet.__class__(self.game)
         self.mcts = mcts1
         self.trainexamplehistory = []
+        self.prints = False
 
     def executeepisode(self):
         trainexample = []
         board = self.game.startphan()
         new_board = self.game.dim_board()
-        self.curplayer = 1
+        self.curplayer = -1
         episodestep = 0
 
         while True:
@@ -28,7 +29,8 @@ class coaching():
 
             action = np.random.choice(len(pi), p=pi)
             board, self.curplayer,  new_board = self.game.nextstate(board, new_board, self.curplayer, action)
-            print("episode :", episodestep, "\n", board)
+            if self.prints:
+                print("episode :", episodestep, "\n", board)
             r = self.game.ggeutnam(board, self.curplayer)
 
             if r != 0:
@@ -37,12 +39,16 @@ class coaching():
     def learn(self):
 
         #self.nnet.loading("~/", "model1.ckpt")
-        for iter in range(1):
+        for iter in range(2000):
+            print("iteration : ", iter+1)
+            self.prints = False
             iterationtrainexample = []
             finalexample = []
             try:
-                for i in range(5):
-                    print("game:", i)
+                for i in range(20):
+                    print("game:", i+1)
+                    if i == 19:
+                        self.prints = True
                     iterationtrainexample += self.executeepisode()
 
                 self.trainexamplehistory.append(iterationtrainexample)
