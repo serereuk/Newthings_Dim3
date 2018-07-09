@@ -21,8 +21,8 @@ class coaching():
         while True:
             episodestep += 1
             oneminusone = self.game.oneminusone(board, self.curplayer)
-            temp = int(episodestep < 20)
-            pi = self.mcts.getactionprob(oneminusone, new_board)
+            temp = int(episodestep < 40)
+            pi = self.mcts.getactionprob(oneminusone, new_board, temp)
             sym = self.game.symme(oneminusone, pi)
             for b, p in sym:
                 trainexample.append([b, self.curplayer, p, None])
@@ -47,7 +47,7 @@ class coaching():
             try:
                 for i in range(30):
                     print("game:", i+1)
-                    if i == 19:
+                    if i == 29:
                         self.prints = True
                     iterationtrainexample += self.executeepisode()
 
