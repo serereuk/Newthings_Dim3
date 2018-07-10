@@ -8,7 +8,7 @@ class coaching():
         self.nnet = nnet
         #self.pnet = self.nnet.__class__(self.game)
         self.mcts = mcts1
-        self.trainexamplehistory = []
+        #self.trainexamplehistory = []
         self.prints = False
 
     def executeepisode(self):
@@ -23,10 +23,9 @@ class coaching():
             oneminusone = self.game.oneminusone(board, self.curplayer)
             temp = int(episodestep < 40)
             pi = self.mcts.getactionprob(oneminusone, new_board, temp)
-            sym = self.game.symme(oneminusone, pi)
+            sym = self.game.symme(new_board, pi)
             for b, p in sym:
                 trainexample.append([b, self.curplayer, p, None])
-
             action = np.random.choice(len(pi), p=pi)
             board, self.curplayer,  new_board = self.game.nextstate(board, new_board, self.curplayer, action)
             if self.prints:
@@ -38,7 +37,7 @@ class coaching():
 
     def learn(self):
 
-        #self.nnet.loading("~/", "model1.ckpt")
+        self.nnet.loading("~/", "model1.ckpt")
         for iter in range(1000):
             print("iteration : ", iter+1)
             self.nnet.saving("~/", "model1.ckpt")
@@ -46,16 +45,14 @@ class coaching():
             iterationtrainexample = []
             finalexample = []
             try:
-                for i in range(30):
+                for i in range(1):
                     print("game:", i+1)
-                    if i == 29:
+                    if i == 0:
                         self.prints = True
                     iterationtrainexample += self.executeepisode()
 
-                self.trainexamplehistory.append(iterationtrainexample)
-
-                for e in self.trainexamplehistory:
-                    finalexample.append(e)
+                    for ssh in iterationtrainexample:
+                        finalexample.append(ssh)
 
                 self.nnet.train(finalexample)
                 self.mcts = mcts(self.game, self.nnet)
