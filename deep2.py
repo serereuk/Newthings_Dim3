@@ -13,7 +13,7 @@ class deep2():
         dropout = tf.layers.dropout
         dense = tf.layers.dense
 
-        self.input_boards = tf.placeholder("float", shape=[None, 3,self.board_x, self.board_y])
+        self.input_boards = tf.placeholder("float", shape=[None, 3 ,self.board_x, self.board_y])
         self.dropout = tf.placeholder("float")
         self.istraining = tf.placeholder(tf.bool, name="is_training")
 

@@ -45,14 +45,16 @@ class coaching():
             iterationtrainexample = []
             finalexample = []
             try:
-                for i in range(1):
+                for i in range(30):
                     print("game:", i+1)
-                    if i == 0:
+                    if i == 29:
                         self.prints = True
                     iterationtrainexample += self.executeepisode()
 
                     for ssh in iterationtrainexample:
                         finalexample.append(ssh)
+                sample_ids = np.random.randint(len(finalexample), size=128)
+                print(np.array(list(zip(*[finalexample[i] for i in sample_ids]))[0]).shape)
 
                 self.nnet.train(finalexample)
                 self.mcts = mcts(self.game, self.nnet)

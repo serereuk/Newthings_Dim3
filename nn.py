@@ -16,16 +16,21 @@ class nn():
         for epoch in range(100):
             print("epoch" + str(epoch + 1), "batch", len(examples))
             batch_idx = 0
-            while batch_idx < int(len(examples) / 50):
-                sample_ids = np.random.randint(len(examples), size=50)
-                boards, pis, vs = list(zip(*[examples[i] for i in sample_ids]))
+            while batch_idx < int(len(examples) / 128):
+                try:
+                    sample_ids = np.random.randint(len(examples), size=128)
+                    boardsa, pis, vs = list(zip(*[examples[i] for i in sample_ids]))
+                    boardsa = np.array(boardsa)
 
-                input_dict = {self.nnet.input_boards: boards, self.nnet.target_pis: pis, self.nnet.target_vs: vs,
+                    input_dict = {self.nnet.input_boards: boardsa, self.nnet.target_pis: pis, self.nnet.target_vs: vs,
                               self.nnet.dropout: 1.0, self.nnet.istraining: True}
 
-                self.sess.run(self.nnet.train_step, feed_dict=input_dict)
-                pi_loss, v_loss = self.sess.run([self.nnet.loss_pi, self.nnet.loss_v], feed_dict=input_dict)
-                batch_idx += 1
+                    self.sess.run(self.nnet.train_step, feed_dict=input_dict)
+                    pi_loss, v_loss = self.sess.run([self.nnet.loss_pi, self.nnet.loss_v], feed_dict=input_dict)
+                    print(self.sess.run(self.nnet.total_loss, feed_dict=input_dict))
+                    batch_idx += 1
+                except Exception as ex:
+                    print("error", ex)
 
 
 
