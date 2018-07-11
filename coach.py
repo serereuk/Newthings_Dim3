@@ -56,9 +56,9 @@ class coaching():
 
                 self.nnet.train(finalexample)
                 self.mcts = mcts(self.game, self.nnet)
-            except Exception as error
+            except Exception as err:
                 self.nnet.saving("/~" + str(iter) + "error/", "model1.ckpt")
-                print(error)
+                print(err)
 
         self.nnet.saving("~/", "model1.ckpt")
 
