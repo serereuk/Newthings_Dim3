@@ -16,9 +16,9 @@ class nn():
         for epoch in range(100):
             print("epoch" + str(epoch + 1), "batch", len(examples))
             batch_idx = 0
-            while batch_idx < int(len(examples) / 128):
+            while batch_idx < int(len(examples) / 64):
                 try:
-                    sample_ids = np.random.randint(len(examples), size=128)
+                    sample_ids = np.random.randint(len(examples), size=64)
                     boardsa, pis, vs = list(zip(*[examples[i] for i in sample_ids]))
                     boardsa = np.array(boardsa)
 
