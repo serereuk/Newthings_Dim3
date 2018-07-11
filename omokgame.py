@@ -66,9 +66,7 @@ class Omokgame():
     def symme(self, board, pi):
         assert (len(pi) == self.gbsize ** 2 + 1)
         pi_board = np.reshape(pi[:-1], (self.gbsize, self.gbsize))
-
         l = []
-
         for i in range(1, 5):
             for j in [True, False]:
                 newb = np.array([np.rot90(board[0], i), np.rot90(board[1], i), np.rot90(board[2], i)])

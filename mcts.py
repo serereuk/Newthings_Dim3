@@ -13,7 +13,7 @@ class mcts():
         self.Vs = {}
 
     def getactionprob(self, oneminusone, new_board,temp=1):
-        for i in range(20):
+        for i in range(40):
             self.search(oneminusone, new_board)
 
         s = self.game.stringstring(oneminusone)

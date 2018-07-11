@@ -27,7 +27,6 @@ class nn():
 
                     self.sess.run(self.nnet.train_step, feed_dict=input_dict)
                     pi_loss, v_loss = self.sess.run([self.nnet.loss_pi, self.nnet.loss_v], feed_dict=input_dict)
-                    print(self.sess.run(self.nnet.total_loss, feed_dict=input_dict))
                     batch_idx += 1
                 except Exception as ex:
                     print("error", ex)
