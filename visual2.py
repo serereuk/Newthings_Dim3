@@ -1,9 +1,5 @@
-from visual import visual
+
 import numpy as np
-from omokgame import Omokgame as games
-from nn import nn
-from mcts import mcts
-import os
 
 class Result():
     def __init__(self, game, nnet_1, mcts_1):
@@ -17,6 +13,7 @@ class Result():
         new_board = self.game.dim_board()
         self.curplayer = -1
         action_1 = []
+        self.nnet.loading("a", "model1.ckpt")
 
         while True:
             oneminusone = self.game.oneminusone(board, self.curplayer)

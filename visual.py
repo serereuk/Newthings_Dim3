@@ -8,12 +8,11 @@ class visual():
     def __init__(self, gbsize, win_standard):
         self.gbsize = gbsize
         self.win_standard = win_standard
-        matplotlib.use("MacOSX")
 
     def prepare_display(self):
         plt.ion()
         fig, axis = plt.subplots(figsize=(self.gbsize, self.gbsize))
-        #fig.canvas.mpl_connect("close_event", exit)
+        fig.canvas.mpl_connect("close_event", exit)
         axis.set_facecolor("xkcd:puce")
         plt.axis((-1, self.gbsize, -1, self.gbsize))
 
