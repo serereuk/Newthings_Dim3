@@ -79,10 +79,5 @@ class Ogame():
                     print(self.state)
 
 
-#def matr(temp ,a):
-#    r = round(int((a[0]-1)/2)); c = round(int((a[1]-1)/2))
-#    temp[c, r] = a[2]
-#    return temp
-
 
 Ogame(Omokgame(9,5), 8).main()

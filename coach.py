@@ -37,17 +37,17 @@ class coaching():
 
     def learn(self):
 
-        for iter in range(431,10000):
+        for iter in range(10000):
             print("iteration : ", iter+1)
-            self.nnet.loading("/~" + str(iter) + "/", "model1.ckpt")
-            self.nnet.saving("/~" + str(iter+1) + "/", "model1.ckpt")
+            self.nnet.loading("a", "model1.ckpt")
+            #self.nnet.saving("/~" + str(iter+1) + "/", "model1.ckpt")
             self.prints = False
             iterationtrainexample = []
             finalexample = []
             try:
-                for i in range(3):
+                for i in range(1):
                     print("game:", i+1)
-                    if i == 2:
+                    if i == 0:
                         self.prints = True
                     iterationtrainexample += self.executeepisode()
 
@@ -57,7 +57,7 @@ class coaching():
                 self.nnet.train(finalexample)
                 self.mcts = mcts(self.game, self.nnet)
             except Exception as err:
-                self.nnet.saving("/~" + str(iter) + "error/", "model1.ckpt")
+                #self.nnet.saving("/~" + str(iter) + "error/", "model1.ckpt")
                 print(err)
 
         self.nnet.saving("~/", "model1.ckpt")

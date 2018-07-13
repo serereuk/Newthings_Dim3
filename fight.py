@@ -1,70 +1,35 @@
-import numpy as np
-from phan import Phan
-from omokgame import Omokgame
 from visual import visual
-from nn import nn
-from mcts import mcts
 
-class fight():
+class fighting():
+    def __init__(self, game, nnet, mcts1):
+        self.game = game
+        self.nnet = nnet
+        #self.pnet = self.nnet.__class__(self.game)
+        self.mcts = mcts1
+        #self.trainexamplehistory = []
+        self.prints = False
 
-    def __init__(self, gbsize, win_standard, order):
-        self.human = None
-        if order == "black":
-            self.human = 1
-        else:
-            self.human = -1
-        self.gbsize = gbsize
-        self.win_standard = win_standard
+    def executeepisode(self):
+        trainexample = []
+        board = self.game.startphan()
+        new_board = self.game.dim_board()
+        self.curplayer = -1
+        episodestep = 0
 
-    def set_player(self, p):
-        self.human = p
-
-    def Act(self, board):
-        try:
-            where = int(input("move, ex) 37 = (3,7)"))
-            moves = [int(where / 10), int(where % 10)]
-            b = Phan(self.gbsize, self.win_standard)
-            b.board = np.copy(board)
-            b.moving(moves, self.human)
-            board = np.copy(b.board)
-
-        except Exception as e:
-            moves = -1
-
-        if moves == -1 or moves not in Omokgame(self.gbsize, self.win_standard).validmove(board, self.human):
-            print("Impossible move, retry")
-            self.Act(board)
-
-        return board
-
-def Run():
-    try:
-        b = Phan(13, 5)
-        game = Omokgame(13,5)
-        board = game.startphan()
-        new_board = game.dim_board()
-        b.board = np.copy(board)
-        player = -1
-        display = visual(13, 5)
-        display.prepare_display()
-        f = fight(13, 5)
         while True:
-            human_move = f.Act(b.board)
-            oneminusone = game.oneminusone(board, player)
+            episodestep += 1
+            oneminusone = self.game.oneminusone(board, self.curplayer)
+            temp = int(episodestep < 40)
+            pi = self.mcts.getactionprob(oneminusone, new_board, temp)
+            sym = self.game.symme(new_board, pi)
+            for b, p in sym:
+                trainexample.append([b, self.curplayer, p, None])
+            action = np.random.choice(len(pi), p=pi)
+            board, self.curplayer,  new_board = self.game.nextstate(board, new_board, self.curplayer, action)
+            if self.prints:
+                print("episode :", episodestep, "\n", board)
+            r = self.game.ggeutnam(board, self.curplayer)
 
-
-
-
-        best_model = nn.loading("folder", "model1")
-        best_mcts = mcts(Omokgame(13, 5), best_model)
-
-    except KeyboardInterrupt:
-        print("error")
-
-
-
-
-
-
-
+            if r != 0:
+                return [(x[0], x[2], r * ((-1) ** (x[1] != self.curplayer))) for x in trainexample]
 
