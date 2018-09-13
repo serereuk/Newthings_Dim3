@@ -42,7 +42,7 @@ class coaching():
         for iter in range(20):
             print("iteration : ", iter+1)
             try:
-                self.nnet.loading("", "model1.ckpt")
+                self.nnet.loading("~431", "model1.ckpt")
             except:
                 print("err")
             self.prints = False
