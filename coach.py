@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 from mcts import mcts
 
 
@@ -21,8 +22,8 @@ class coaching():
         while True:
             episodestep += 1
             oneminusone = self.game.oneminusone(board, self.curplayer)
-            temp = int(episodestep < 40)
-            pi = self.mcts.getactionprob(oneminusone, new_board, temp)
+            #temp = int(episodestep < 40)
+            pi = self.mcts.getactionprob(oneminusone, new_board, 1)
             sym = self.game.symme(new_board, pi)
             for b, p in sym:
                 trainexample.append([b, self.curplayer, p, None])
@@ -31,16 +32,16 @@ class coaching():
             if self.prints:
                 print("episode :", episodestep, "\n", board)
             r = self.game.ggeutnam(board, self.curplayer)
+            trainexample.append([action % self.game.gbsize, int(action / self.game.gbsize)])
 
             if r != 0:
                 return [(x[0], x[2], r * ((-1) ** (x[1] != self.curplayer))) for x in trainexample]
 
     def learn(self):
 
-        for iter in range(10000):
+        for iter in range(1):
             print("iteration : ", iter+1)
-            self.nnet.loading("a", "model1.ckpt")
-            #self.nnet.saving("/~" + str(iter+1) + "/", "model1.ckpt")
+            self.nnet.loading("~431", "model1.ckpt")
             self.prints = False
             iterationtrainexample = []
             finalexample = []
@@ -53,6 +54,9 @@ class coaching():
 
                     for ssh in iterationtrainexample:
                         finalexample.append(ssh)
+
+                    with open("result.txt", "wb") as f:
+                        pickle.dump(finalexample, f)
 
                 self.nnet.train(finalexample)
                 self.mcts = mcts(self.game, self.nnet)

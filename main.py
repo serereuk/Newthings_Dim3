@@ -12,4 +12,3 @@ Mcts = mcts(g, nnet)
 
 c = coaching(g, nnet, Mcts)
 c.learn()
-

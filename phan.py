@@ -1,5 +1,5 @@
 import numpy as np
-
+from collections import deque
 def rle2(x, color):
     dots = np.where(x.T.flatten() == color)[0]
     run_lengths = []

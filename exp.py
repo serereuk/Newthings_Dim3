@@ -11,10 +11,11 @@ g = games(9, 5)
 nnet = nn(g)
 Mcts = mcts(g, nnet)
 VV = Result(g, nnet, Mcts)
-try:
-    savings = VV.perform()
-    with open("savings.txt", "wb") as f:
-        pickle.dump(savings, f)
-        print(savings)
-except Exception as err:
-    print(err)
+for i in range(2):
+    try:
+        savings = VV.perform()
+        with open("sav" + str(i)+".txt", "wb") as f:
+            pickle.dump(savings, f)
+            print(savings)
+    except Exception as err:
+        print(err)
