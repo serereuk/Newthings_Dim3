@@ -30,7 +30,7 @@ class coaching():
             action = np.random.choice(len(pi), p=pi)
             board, self.curplayer,  new_board = self.game.nextstate(board, new_board, self.curplayer, action)
             if self.prints:
-                print("episode :", episodestep, "\n", board)
+                print("step :", episodestep, "\n", board)
             r = self.game.ggeutnam(board, self.curplayer)
             trainexample.append([action % self.game.gbsize, int(action / self.game.gbsize)])
 
